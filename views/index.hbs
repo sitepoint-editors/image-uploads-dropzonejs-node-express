@@ -1,67 +1,62 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
     <title>Dropzone.js Example</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">    
-    <link rel="stylesheet" href="/dropzone/dist/dropzone.css">        
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/dropzone/dist/dropzone.css">
     <meta name="csrf-token" content="XYZ123">
-</head>
-<body>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Dropzone.js Example</h1>
+      </header>
 
-	<div class="container">
+      <div>
+        <form id="upload-widget" method="post" action="/upload" class="dropzone">
+          <div class="fallback">
+            <input name="file" type="file" />
+          </div>
+        </form>
+      </div>
 
-		<header>
-			<h1>Dropzone.js Example</h1>
-		</header>
+      <footer style="margin-top:500px;">
+        <p>This demo is designed to accompany <a href="http://www.sitepoint.com/file-upload-form-express-dropzone-js/">this article</a>.</p>
+      </footer>
+    </div>
 
-		<div>
-			<form id="upload-widget" method="post" action="/upload" class="dropzone">
-				<div class="fallback">
-					<input name="file" type="file" />
-  			</div>
-			</form>
-		</div>
-
-		<footer style="margin-top:500px;">
-			<p>This demo is designed to accompany <a href="http://www.sitepoint.com/ARTICLE-URL">this article</a>.</p>
-		</footer>
-
-	</div>
-	
-  <script type="text/javascript" src="/dropzone/dist/dropzone.js"></script>    
-  <script type="text/javascript">
-    Dropzone.options.uploadWidget = {  
-		  paramName: 'file',
-		  maxFilesize: 2, // MB
-		  maxFiles: 1,		  
-		  dictDefaultMessage: 'Drag an image here to upload, or click to select one',
-		  headers: {
-				'x-csrf-token': document.querySelectorAll('meta[name=csrf-token]')[0].getAttributeNode('content').value,
-			},
-		  acceptedFiles: 'image/*',		  
-		  init: function() {	    
-		  	this.on('success', function( file, resp ){
-		  		console.log( file );
-		  		console.log( resp );
-		  	});
-		    this.on('thumbnail', function(file) {	      
-		      if ( file.width < 640 || file.height < 480 ) {
-		        file.rejectDimensions();
-		      }
-		      else {
-		        file.acceptDimensions();
-		      }
-		    });
-		  },
-		  accept: function(file, done) {
-		    file.acceptDimensions = done;
-		    file.rejectDimensions = function() { 
-		    	done('The image must be at least 640 x 480px')
-		    };	    
-		  }		  
-		};	
-  </script>
-
-</body>
+    <script type="text/javascript" src="/dropzone/dist/dropzone.js"></script>
+    <script type="text/javascript">
+      Dropzone.options.uploadWidget = {
+        paramName: 'file',
+        maxFilesize: 2, // MB
+        maxFiles: 1,
+        dictDefaultMessage: 'Drag an image here to upload, or click to select one',
+        headers: {
+          'x-csrf-token': document.querySelectorAll('meta[name=csrf-token]')[0].getAttributeNode('content').value,
+        },
+        acceptedFiles: 'image/*',
+        init: function() {
+          this.on('success', function( file, resp ){
+            console.log( file );
+            console.log( resp );
+          });
+          this.on('thumbnail', function(file) {
+            if ( file.width < 640 || file.height < 480 ) {
+              file.rejectDimensions();
+            } else {
+              file.acceptDimensions();
+            }
+          });
+        },
+        accept: function(file, done) {
+          file.acceptDimensions = done;
+          file.rejectDimensions = function() {
+            done('The image must be at least 640 x 480px')
+          };
+        }
+      };
+    </script>
+  </body>
 </html>
