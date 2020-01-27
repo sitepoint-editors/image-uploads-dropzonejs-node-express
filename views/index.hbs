@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Dropzone.js Example</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/dropzone/dist/dropzone.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css">
     <meta name="csrf-token" content="XYZ123">
   </head>
   <body>
@@ -20,13 +20,9 @@
           </div>
         </form>
       </div>
-
-      <footer style="margin-top:500px;">
-        <p>This demo is designed to accompany <a href="http://www.sitepoint.com/file-upload-form-express-dropzone-js/">this article</a>.</p>
-      </footer>
     </div>
 
-    <script type="text/javascript" src="/dropzone/dist/dropzone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
     <script type="text/javascript">
       Dropzone.options.uploadWidget = {
         paramName: 'file',
@@ -34,26 +30,28 @@
         maxFiles: 1,
         dictDefaultMessage: 'Drag an image here to upload, or click to select one',
         headers: {
-          'x-csrf-token': document.querySelectorAll('meta[name=csrf-token]')[0].getAttributeNode('content').value,
+          'x-csrf-token': document.querySelector('meta[name=csrf-token]').getAttributeNode('content').value,
         },
         acceptedFiles: 'image/*',
         init: function() {
-          this.on('success', function( file, resp ){
-            console.log( file );
-            console.log( resp );
+          this.on('success', function(file, resp){
+            console.log(file);
+            console.log(resp);
           });
           this.on('thumbnail', function(file) {
-            if ( file.width < 640 || file.height < 480 ) {
-              file.rejectDimensions();
-            } else {
-              file.acceptDimensions();
+            if (file.accepted !== false) {
+              if (file.width < 640 || file.height < 480) {
+                file.rejectDimensions();
+              } else {
+                file.acceptDimensions();
+              }
             }
           });
         },
         accept: function(file, done) {
           file.acceptDimensions = done;
           file.rejectDimensions = function() {
-            done('The image must be at least 640 x 480px')
+            done('The image must be at least 640 x 480px');
           };
         }
       };
